@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg1:#0a0c1f;
+  --bg2:#160b30;
+  --pink:#ff7ce9;
+  --aqua:#26ffd9;
+  --text:#e8f0ff;
+  --muted:#a2adc7;
+  --radius:12px;
+}
+
+body {
+  margin:0;
+  font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.login-box {
+  background:rgba(255,255,255,0.07);
+  border-radius:var(--radius);
+  padding:35px;
+  width:360px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+h2 {
+  text-align:center;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:25px;
+}
+
+label {
+  display:block;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+input, select {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-bottom:15px;
+  background-color:rgba(255,255,255,0.1);
+  color:var(--text);
+  font-size:15px;
+  outline:none;
+}
+
+select {
+  background-color:rgba(255,255,255,0.15);
+  color:var(--text);
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  cursor:pointer;
+}
+
+select option {
+  background-color:#1c1630;
+  color:#fff;
+}
+
+select:focus {
+  background-color:rgba(255,255,255,0.2);
+  outline:1px solid var(--aqua);
+}
+
+input::placeholder {
+  color:rgba(255,255,255,0.5);
+}
+
+button {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+  transition:transform 0.2s;
+}
+
+button:hover {
+  transform:scale(1.05);
+}
+
+.note {
+  text-align:center;
+  margin-top:12px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.note a {
+  color:var(--aqua);
+  text-decoration:none;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>Welcome to PheraSpace - Where Forever found its Home!</h2>
+  <form id="loginForm">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password" required>
+
+    <label for="role">Login as</label>
+    <select id="role" required>
+      <option value="" disabled selected>Select role</option>
+      <option value="user">User</option>
+      <option value="owner">Venue Owner</option>
+      <option value="admin">Admin</option>
+    </select>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="note">
+    Don’t have an account? <a href="register.html">Register here</a>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const role = document.getElementById("role").value;
+
+  if(!email || !password || !role){
+    alert("⚠ Please fill all fields before logging in.");
+    return;
+  }
+
+  // Save current login info in localStorage (for reference)
+  localStorage.setItem("loggedUser", JSON.stringify({ email, role }));
+
+  // Confirm and redirect
+  alert(`✅ Logged in successfully as ${role.toUpperCase()}!`);
+
+  if(role === "user"){
+    window.location.href = "user-dashboard.html";
+  } else if(role === "owner"){
+    window.location.href = "owner-dashboard.html";
+  } else if(role === "admin"){
+    window.location.href = "admin-dashboard.html";
+  }
+});
+</script>
+
+</body>
+</html>

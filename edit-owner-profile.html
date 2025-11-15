@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — Edit Owner Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg1: #090d1a;
+      --bg2: #180a2c;
+      --accent1: #ff7ce9;
+      --accent2: #26ffd9;
+      --text: #e8f0ff;
+      --radius: 14px;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: var(--radius);
+      margin-bottom: 15px;
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      outline: none;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color: #111;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .success {
+      text-align: center;
+      color: var(--accent2);
+      font-weight: 600;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>✏️ Edit Owner Profile</h1>
+
+    <form id="editForm" onsubmit="saveProfile(event)">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" value="Rajesh Kumar" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" value="rajeshkumar@gmail.com" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" value="+91 9876543210" required>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" value="Delhi" required>
+
+      <button type="submit" class="btn">💾 Save & Return to Dashboard</button>
+    </form>
+
+    <p id="successMsg" class="success">✅ Profile updated successfully!</p>
+  </div>
+
+  <script>
+    function saveProfile(event) {
+      event.preventDefault();
+
+      // Get updated values
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const city = document.getElementById('city').value;
+
+      // Save to localStorage (simulation)
+      const updatedProfile = { name, email, phone, city };
+      localStorage.setItem('ownerProfile', JSON.stringify(updatedProfile));
+
+      // Show success message briefly then go back
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+
+      setTimeout(() => {
+        window.location.href = "owner-dashboard.html";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

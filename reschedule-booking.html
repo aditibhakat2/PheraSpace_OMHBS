@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Reschedule Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#090d1a; --bg2:#180a2c;
+  --pink:#ff7ce9; --aqua:#26ffd9;
+  --text:#e8f0ff; --radius:14px;
+}
+
+body{
+  margin:0;
+  padding:20px;
+  font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
+
+.container{
+  max-width:650px;
+  margin:auto;
+  background:rgba(255,255,255,0.08);
+  padding:25px;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+h1{
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+  text-align:center;
+}
+
+input, select{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:var(--radius);
+  background:rgba(255,255,255,0.12);
+  color:white;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  margin-top:20px;
+  border:none;
+  border-radius:var(--radius);
+  font-weight:700;
+  cursor:pointer;
+  color:#111;
+}
+
+.save-btn{
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+}
+.back-btn{
+  background:linear-gradient(90deg,var(--blue),var(--aqua));
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Reschedule Booking</h1>
+
+  <label>New Date</label>
+  <input type="date" id="newDate">
+
+  <label>New Time Slot</label>
+  <select id="newSlot">
+    <option value="">Select slot</option>
+    <option value="Morning (9am-1pm)">Morning (9am-1pm)</option>
+    <option value="Afternoon (1pm-5pm)">Afternoon (1pm-5pm)</option>
+    <option value="Evening (6pm-11pm)">Evening (6pm-11pm)</option>
+  </select>
+
+  <button class="btn save-btn" onclick="saveReschedule()">Save Changes</button>
+  <button class="btn back-btn" onclick="window.location.href='user-dashboard.html'">Back to Dashboard</button>
+</div>
+
+<script>
+function saveReschedule(){
+  let newDate = document.getElementById("newDate").value;
+  let newSlot = document.getElementById("newSlot").value;
+
+  if(!newDate || !newSlot){
+    alert("Please fill all fields.");
+    return;
+  }
+
+  let booking = JSON.parse(localStorage.getItem("bookingData"));
+
+  booking.eventDate = newDate;
+  booking.timeSlot = newSlot;
+
+  localStorage.setItem("bookingData", JSON.stringify(booking));
+
+  alert("✅ Booking Rescheduled Successfully!");
+  window.location.href = "user-dashboard.html";
+}
+</script>
+
+</body>
+</html>

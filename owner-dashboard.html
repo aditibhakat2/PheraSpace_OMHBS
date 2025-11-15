@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owner Dashboard — PheraSpace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg1:#0a0c1f;
+  --bg2:#160b30;
+  --aqua:#26ffd9;
+  --pink:#ff7ce9;
+  --text:#e8f0ff;
+  --radius:14px;
+}
+
+body {
+  margin:0;
+  font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  min-height:100vh;
+}
+
+.container {
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
+  position:relative;
+}
+
+h1 {
+  text-align:center;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:40px;
+  font-size:32px;
+}
+
+/* --- Dashboard Grid --- */
+.dashboard-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.card {
+  background:rgba(255,255,255,0.08);
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+  padding:25px 15px;
+  cursor:pointer;
+  transition:transform 0.2s, background 0.2s;
+}
+.card:hover {
+  transform:translateY(-5px);
+  background:rgba(255,255,255,0.12);
+}
+.card h3 {
+  color:var(--aqua);
+  margin-bottom:10px;
+  font-size:18px;
+}
+.card p {
+  color:#a5b3d1;
+  font-size:14px;
+}
+
+/* --- Logout Button --- */
+.logout-btn {
+  position:absolute;
+  top:25px;
+  right:25px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+  border:none;
+  border-radius:8px;
+  padding:10px 16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
+.logout-btn:hover {
+  transform:scale(1.05);
+}
+
+footer {
+  text-align:center;
+  margin-top:40px;
+  color:#9faac7;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <button class="logout-btn" onclick="logout()">Logout</button>
+  <h1>🏢 Venue Owner Dashboard</h1>
+
+  <div class="dashboard-grid">
+    <div class="card" onclick="go('owner-manage-halls.html')">
+      <h3>📋 Manage Halls</h3>
+      <p>Add, edit, or remove your listed halls.</p>
+    </div>
+
+    <div class="card" onclick="go('owner-availability.html')">
+      <h3>📅 Manage Availability</h3>
+      <p>Set or update hall availability dates.</p>
+    </div>
+
+    <div class="card" onclick="go('owner-bookings.html')">
+      <h3>📖 View Bookings</h3>
+      <p>See all confirmed and cancelled bookings.</p>
+    </div>
+
+    <div class="card" onclick="go('owner-reviews.html')">
+      <h3>⭐ Customer Reviews</h3>
+      <p>Read customer feedback and ratings.</p>
+    </div>
+
+    <div class="card" onclick="go('owner-verification-status.html')">
+      <h3>🛡 Verification Status</h3>
+      <p>Check hall verification results from admin.</p>
+    </div>
+
+    <div class="card" onclick="go('owner-profile.html')">
+      <h3>👤 Profile Details</h3>
+      <p>View and update your personal information.</p>
+    </div>
+  </div>
+
+  <footer>© 2025 PheraSpace | Venue Owner Portal</footer>
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+
+// Logout and redirect
+function logout(){
+  localStorage.removeItem("loggedUser");
+  alert("You have been logged out successfully!");
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

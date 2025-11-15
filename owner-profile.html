@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — Owner Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg1: #090d1a;
+      --bg2: #180a2c;
+      --accent1: #ff7ce9;
+      --accent2: #26ffd9;
+      --text: #e8f0ff;
+      --muted: #9faac7;
+      --radius: 14px;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .profile-info {
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color: #111;
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🏠 Owner Profile</h1>
+
+    <div class="profile-info" id="profileInfo">
+      <p><strong>Name:</strong> Aditi Bhakat</p>
+      <p><strong>Email:</strong> aditibhakat0208@pheraspace.com</p>
+      <p><strong>Phone:</strong> +91 9876543210</p>
+      <p><strong>City:</strong> Pune</p>
+      <p><strong>Total Halls Listed:</strong> 3</p>
+    </div>
+
+    <div class="btn-container">
+      <button class="btn" onclick="goBack()">⬅ Back to Dashboard</button>
+      <button class="btn" onclick="editProfile()">✏️ Edit Profile</button>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "owner-dashboard.html";
+    }
+
+    function editProfile() {
+      window.location.href = "edit-owner-profile.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Payment Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#090d1a; --bg2:#180a2c;
+  --pink:#ff7ce9; --aqua:#26ffd9; --blue:#68a5ff;
+  --text:#e8f0ff; --muted:#9faac7;
+  --radius:14px;
+}
+
+body{
+  margin:0;
+  padding:20px;
+  font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  background:rgba(255,255,255,0.07);
+  padding:25px;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+
+h1{
+  font-size:28px;
+  margin-bottom:10px;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.back{
+  margin-bottom:20px;
+  display:inline-block;
+  cursor:pointer;
+  color:var(--muted);
+  font-size:15px;
+}
+
+/* Booking Summary */
+.section-title{
+  margin-top:25px;
+  margin-bottom:8px;
+  color:var(--aqua);
+  font-size:20px;
+  font-weight:600;
+}
+
+.summary-box{
+  background:rgba(255,255,255,0.1);
+  padding:18px;
+  border-radius:var(--radius);
+  margin-bottom:20px;
+  font-size:16px;
+}
+
+.summary-box p{
+  margin:6px 0;
+}
+
+/* Payment Options */
+.payment-method-box{
+  background:rgba(255,255,255,0.12);
+  padding:18px;
+  border-radius:var(--radius);
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:15px;
+  border:2px solid rgba(255,255,255,0.15);
+  cursor:pointer;
+  transition:0.25s;
+}
+
+.payment-method-box:hover{
+  border-color:var(--aqua);
+  background:rgba(255,255,255,0.18);
+}
+
+.payment-method-box input{
+  width:22px;
+  height:22px;
+  cursor:pointer;
+}
+
+.pay-icon{
+  width:45px;
+  height:45px;
+  background:linear-gradient(135deg,var(--pink),var(--aqua));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111;
+  font-size:20px;
+  font-weight:800;
+}
+
+/* Pay Button */
+.pay-btn{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  border:none;
+  border-radius:var(--radius);
+  color:#111;
+  font-size:18px;
+  cursor:pointer;
+  font-weight:700;
+  box-shadow:0 0 10px rgba(255,255,255,0.2);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="back" onclick="window.location='booking.html'">⬅ Back to Booking</div>
+
+<div class="container">
+
+  <h1>Complete Payment</h1>
+
+  <!-- Booking Summary -->
+  <div class="section-title">Booking Summary</div>
+
+  <div class="summary-box">
+    <p><strong>Hall:</strong> <span id="hallName"></span></p>
+    <p><strong>Date:</strong> <span id="eventDate"></span></p>
+    <p><strong>Time Slot:</strong> <span id="timeSlot"></span></p>
+    <p><strong>Guests:</strong> <span id="guestCount"></span></p>
+    <p><strong>Total Amount:</strong> ₹<span id="totalPrice"></span></p>
+  </div>
+
+  <!-- Payment Method -->
+  <div class="section-title">Choose Payment Method</div>
+
+  <label class="payment-method-box">
+    <input type="radio" name="payment" value="UPI">
+    <div class="pay-icon">₹</div>
+    <div>UPI (Google Pay / PhonePe / Paytm)</div>
+  </label>
+
+  <label class="payment-method-box">
+    <input type="radio" name="payment" value="Card">
+    <div class="pay-icon">💳</div>
+    <div>Debit / Credit Card</div>
+  </label>
+
+  <label class="payment-method-box">
+    <input type="radio" name="payment" value="NetBanking">
+    <div class="pay-icon">🏦</div>
+    <div>Net Banking</div>
+  </label>
+
+  <label class="payment-method-box">
+    <input type="radio" name="payment" value="Wallet">
+    <div class="pay-icon">👜</div>
+    <div>Wallet (Paytm / Amazon Pay)</div>
+  </label>
+
+  <button class="pay-btn" onclick="makePayment()">Pay Now</button>
+
+</div>
+
+<script>
+/* ✅ Load booking summary from localStorage */
+let booking = null;
+
+try{
+  booking = JSON.parse(localStorage.getItem("bookingData"));
+}catch(e){}
+
+if(!booking){
+  alert("Booking details not found!");
+}else{
+  document.getElementById("hallName").innerText = booking.hallName;
+  document.getElementById("eventDate").innerText = booking.eventDate;
+  document.getElementById("timeSlot").innerText = booking.timeSlot;
+  document.getElementById("guestCount").innerText = booking.guests;
+  document.getElementById("totalPrice").innerText = booking.totalPrice;
+}
+
+/* ✅ Payment Simulation */
+function makePayment(){
+  const selected = document.querySelector('input[name="payment"]:checked');
+
+  if(!selected){
+    alert("Please select a payment method.");
+    return;
+  }
+
+  alert("Processing payment using " + selected.value + "...");
+
+  setTimeout(()=>{
+    alert("✅ Payment Successful!");
+    localStorage.setItem("paymentSuccess","true");
+    window.location = "booking-confirmation.html";
+  }, 1500);
+}
+</script>
+
+</body>
+</html>

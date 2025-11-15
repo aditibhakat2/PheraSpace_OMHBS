@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edit Profile — PheraSpace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#090d1a; --bg2:#180a2c;
+  --pink:#ff7ce9; --aqua:#26ffd9;
+  --text:#e8f0ff; --radius:14px;
+}
+
+body{
+  margin:0;
+  padding:20px;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  font-family:"Inter",sans-serif;
+  color:var(--text);
+}
+
+.container{
+  max-width:600px;
+  margin:auto;
+  background:rgba(255,255,255,0.08);
+  padding:25px;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+h1{
+  text-align:center;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+label{
+  display:block;
+  margin-top:10px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border:none;
+  border-radius:var(--radius);
+  background:rgba(255,255,255,0.12);
+  color:white;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  margin-top:20px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+  border:none;
+  border-radius:var(--radius);
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Edit Profile</h1>
+
+  <label>Name</label>
+  <input type="text" id="name">
+
+  <label>Email</label>
+  <input type="email" id="email">
+
+  <label>Phone</label>
+  <input type="text" id="phone">
+
+  <button class="btn" onclick="saveProfile()">Save Changes</button>
+  <button class="btn" onclick="window.location.href='user-dashboard.html'" style="background:linear-gradient(90deg,#68a5ff,#26ffd9);">Back to Dashboard</button>
+</div>
+
+<script>
+/* Load saved profile */
+let profile = JSON.parse(localStorage.getItem("profile")) || {
+  name:"User",
+  email:"user@example.com",
+  phone:"+91 XXXXX XXXXX"
+};
+
+document.getElementById("name").value = profile.name;
+document.getElementById("email").value = profile.email;
+document.getElementById("phone").value = profile.phone;
+
+function saveProfile(){
+  profile = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value
+  };
+
+  localStorage.setItem("profile", JSON.stringify(profile));
+  alert("✅ Profile Updated!");
+  window.location.href = "user-dashboard.html";
+}
+</script>
+
+</body>
+</html>

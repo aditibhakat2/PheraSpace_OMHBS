@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #090d1a, #180a2c);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffb400;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-back {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .btn-back:hover {
+      background-color: #666;
+      transform: scale(1.02);
+    }
+
+    .btn-proceed {
+      background-color: #ffb400;
+      color: #090d1a;
+    }
+
+    .btn-proceed:hover {
+      background-color: #ffd65c;
+      transform: scale(1.02);
+    }
+
+    .hall-info {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .hall-info p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Book Your Hall</h1>
+
+    <div class="hall-info">
+      <p><strong>Hall Name:</strong> Royal Banquet Hall</p>
+      <p><strong>Location:</strong> Mumbai</p>
+      <p><strong>Price:</strong> ₹50,000 per day</p>
+      <p><strong>Capacity:</strong> 400 guests</p>
+    </div>
+
+    <form action="payment.html" method="get">
+      <label for="date">Select Date:</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="timeSlot">Select Time Slot:</label>
+      <select id="timeSlot" name="timeSlot" required>
+        <option value="">Select a Time Slot</option>
+        <option value="morning">Morning (8 AM – 12 PM)</option>
+        <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
+        <option value="evening">Evening (4 PM – 8 PM)</option>
+        <option value="fullday">Full Day (8 AM – 8 PM)</option>
+      </select>
+
+      <label for="guests">Number of Guests:</label>
+      <input type="number" id="guests" name="guests" min="1" max="500" required>
+
+      <label for="eventType">Event Type:</label>
+      <select id="eventType" name="eventType" required>
+        <option value="">Select</option>
+        <option value="wedding">Wedding</option>
+        <option value="engagement">Engagement</option>
+        <option value="reception">Reception</option>
+        <option value="birthday">Birthday</option>
+        <option value="other">Other</option>
+      </select>
+
+      <div class="btn-container">
+        <a href="hall-details.html" class="btn btn-back">← Back to Hall Details</a>
+        <button type="submit" class="btn btn-proceed">Proceed to Payment →</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

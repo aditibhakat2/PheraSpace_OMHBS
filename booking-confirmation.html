@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Booking Confirmation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+:root{ --bg1:#090d1a; --bg2:#180a2c; --pink:#ff7ce9; --aqua:#26ffd9; --blue:#68a5ff; --text:#e8f0ff; --muted:#b7c0d8; --radius:14px; }
+body{ margin:0; padding:20px; font-family:"Inter",sans-serif; background:linear-gradient(135deg,var(--bg1),var(--bg2)); color:var(--text); text-align:center; }
+.container{ max-width:650px; margin:auto; background:rgba(255,255,255,0.08); padding:30px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.12); box-shadow:0 0 25px rgba(0,0,0,0.4); }
+h1{ font-size:32px; background:linear-gradient(90deg,var(--pink),var(--aqua)); -webkit-background-clip:text; color:transparent; margin-bottom:10px; }
+.success-icon{ font-size:70px; margin-bottom:10px; color:#39ffb0; }
+p{ color:var(--muted); margin:6px 0; }
+.summary-box{ background:rgba(255,255,255,0.07); padding:20px; border-radius:var(--radius); margin-top:20px; text-align:left; }
+.summary-box p{ margin:8px 0; font-size:17px; }
+.btn{ width:100%; padding:15px; border:none; border-radius:var(--radius); cursor:pointer; font-size:18px; font-weight:700; margin-top:20px; text-decoration:none; display:block; text-align:center; }
+.invoice-btn{ background:linear-gradient(90deg,var(--pink),var(--aqua)); color:#111; }
+.dashboard-btn{ background:linear-gradient(90deg,var(--blue),var(--aqua)); color:#111; }
+.booking-id{ font-size:20px; margin:12px 0; font-weight:700; color:var(--aqua); }
+.policy{ margin-top:10px; font-size:14px; color:#c7d2ff; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="success-icon">✅</div>
+  <h1>Booking Confirmed!</h1>
+  <div class="booking-id" id="bookingID"></div>
+  <p>Your booking was successful. Here are your details:</p>
+
+  <div class="summary-box">
+    <p><strong>Hall Name:</strong> <span id="hallName"></span></p>
+    <p><strong>Date:</strong> <span id="eventDate"></span></p>
+    <p><strong>Time Slot:</strong> <span id="timeSlot"></span></p>
+    <p><strong>No. of Guests:</strong> <span id="guestCount"></span></p>
+    <p><strong>Total Paid:</strong> ₹<span id="totalPrice"></span></p>
+    <p class="policy" id="policyText"></p>
+  </div>
+
+  <button class="btn invoice-btn" id="invoiceBtn">View / Download Invoice</button>
+  <a href="user-dashboard.html" class="btn dashboard-btn">Back to Dashboard</a>
+</div>
+
+<script>
+function toDate(dStr){ return new Date(dStr + 'T00:00:00'); }
+function addDays(d, n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function genID(all){ let id; do{ id = "PS" + Math.floor(Math.random()*900000 + 100000); }while(all.some(b=>b.bookingID===id)); return id; }
+
+const bData = JSON.parse(localStorage.getItem("bookingData")||"null");
+if(!bData){ alert("No booking data found."); location.href="user-dashboard.html"; }
+
+let allBookings = JSON.parse(localStorage.getItem("allBookings")||"[]");
+
+// create a new booking entry
+const bookingID = genID(allBookings);
+const createdAt = new Date().toISOString();
+
+const newBooking = {
+  bookingID,
+  hallName: bData.hallName,
+  hallPrice: bData.hallPrice,
+  eventDate: bData.eventDate,
+  timeSlot: bData.timeSlot,
+  guests: bData.guests,
+  totalPrice: bData.totalPrice,
+  status: "Confirmed",
+  createdAt
+};
+
+// push and persist
+allBookings.push(newBooking);
+localStorage.setItem("allBookings", JSON.stringify(allBookings));
+localStorage.setItem("lastBookingID", bookingID);
+
+// also prep invoice payload (used by invoice.html)
+localStorage.setItem("invoiceData", JSON.stringify(newBooking));
+
+// fill UI
+document.getElementById("bookingID").innerText = "Booking ID: " + bookingID;
+document.getElementById("hallName").innerText = newBooking.hallName;
+document.getElementById("eventDate").innerText = newBooking.eventDate;
+document.getElementById("timeSlot").innerText = newBooking.timeSlot;
+document.getElementById("guestCount").innerText = newBooking.guests;
+document.getElementById("totalPrice").innerText = newBooking.totalPrice;
+
+// Option A: free cancellation until eventDate - 2 days (80% refund)
+const cutoff = addDays(toDate(newBooking.eventDate), -2);
+document.getElementById("policyText").innerText =
+  `Free cancellation until ${cutoff.toLocaleDateString()} (80% refund if you cancel by this date).`;
+
+// invoice button
+document.getElementById("invoiceBtn").addEventListener("click", ()=>{
+  localStorage.setItem("invoiceData", JSON.stringify(newBooking));
+  location.href = "invoice.html";
+});
+</script>
+
+</body>
+</html>

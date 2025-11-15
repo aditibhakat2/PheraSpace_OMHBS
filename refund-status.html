@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Refund Status</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{ --bg1:#070b18; --bg2:#120b24; --pink:#ff7ce9; --aqua:#26ffd9; --blue:#68a5ff; --text:#e8f0ff; --muted:#9faac7; --radius:14px; }
+body{ margin:0; padding:20px; background:linear-gradient(135deg,var(--bg1),var(--bg2)); color:var(--text); font-family:"Inter",sans-serif; text-align:center; }
+.container{ max-width:700px; margin:auto; background:rgba(255,255,255,0.08); padding:25px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.15); }
+h1{ background:linear-gradient(90deg,var(--pink),var(--aqua)); -webkit-background-clip:text; color:transparent; font-size:28px; }
+.box{ background:rgba(255,255,255,0.07); border-radius:var(--radius); padding:18px; text-align:left; margin-top:20px; }
+.btn{ display:block; width:100%; padding:14px; border:none; margin-top:20px; border-radius:var(--radius); font-weight:700; cursor:pointer; background:linear-gradient(90deg,var(--blue),var(--aqua)); color:#111; text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Refund Details</h1>
+  <div id="box" class="box"></div>
+  <a href="user-dashboard.html" class="btn">Back to Dashboard</a>
+</div>
+
+<script>
+function q(k){ return new URLSearchParams(location.search).get(k); }
+function fmt(n){ return Number(n||0).toLocaleString('en-IN'); }
+const id = q('id') || localStorage.getItem('lastBookingID');
+const all = JSON.parse(localStorage.getItem('allBookings')||'[]');
+const b = all.find(x=>x.bookingID===id);
+
+if(!b){
+  document.getElementById('box').innerHTML = "<p>No refund found for this link.</p>";
+}else if(b.status!=='Cancelled'){
+  document.getElementById('box').innerHTML = `<p>Booking ${b.bookingID} is not cancelled. No refund data.</p>`;
+}else{
+  document.getElementById('box').innerHTML = `
+    <p><strong>Booking ID:</strong> ${b.bookingID}</p>
+    <p><strong>Hall:</strong> ${b.hallName}</p>
+    <p><strong>Cancelled On:</strong> ${b.cancellationDate||'-'}</p>
+    <p><strong>Refund Amount:</strong> ₹${fmt(b.refundAmount||0)}</p>
+    <p><strong>Refund Status:</strong> ${b.refundStatus||'Initiated'}</p>
+    <p><strong>Refund ID:</strong> REF-${Math.floor(Math.random()*900000+100000)}</p>
+    <p><strong>Expected Time:</strong> 3–5 working days</p>
+  `;
+}
+</script>
+</body>
+</html>

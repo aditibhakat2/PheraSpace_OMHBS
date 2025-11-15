@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — Reviews</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg1: #090d1a;
+      --bg2: #180a2c;
+      --accent1: #ff7ce9;
+      --accent2: #26ffd9;
+      --text: #e8f0ff;
+      --muted: #9faac7;
+      --radius: 14px;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color: #111;
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      background: rgba(255,255,255,0.1);
+      color: var(--accent2);
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .rating {
+      color: gold;
+      font-size: 18px;
+    }
+
+    .review {
+      text-align: left;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    #addReviewForm {
+      display: none;
+      margin-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      margin-bottom: 15px;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .success {
+      color: var(--accent2);
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <h1>⭐ My Reviews</h1>
+    <!-- ✅ Back Button -->
+    <button class="btn" onclick="goBack()">⬅ Back to Dashboard</button>
+  </div>
+
+  <div class="container">
+    <table id="reviewTable">
+      <thead>
+        <tr>
+          <th>Hall Name</th>
+          <th>Rating</th>
+          <th>Review</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dummy existing reviews -->
+        <tr>
+          <td>Royal Banquet Hall</td>
+          <td class="rating">★★★★★</td>
+          <td class="review">Excellent service and stunning decor. The staff was very supportive.</td>
+          <td>2025-10-25</td>
+        </tr>
+        <tr>
+          <td>Sunshine Palace</td>
+          <td class="rating">★★★★☆</td>
+          <td class="review">Nice hall with great lighting, though parking was a bit tight.</td>
+          <td>2025-11-01</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br>
+    <button class="btn" onclick="toggleAddReview()">+ Add New Review</button>
+
+    <!-- Hidden Add Review Form -->
+    <form id="addReviewForm" onsubmit="addNewReview(event)">
+      <label for="hall">Select Hall:</label>
+      <select id="hall" required>
+        <option value="">-- Choose Hall --</option>
+        <option>Royal Banquet Hall</option>
+        <option>Sunshine Palace</option>
+        <option>Lotus Grand Hall</option>
+        <option>Golden Dreams Venue</option>
+      </select>
+
+      <label for="rating">Rating:</label>
+      <select id="rating" required>
+        <option value="">-- Select Rating --</option>
+        <option value="5">★★★★★ (5 - Excellent)</option>
+        <option value="4">★★★★☆ (4 - Good)</option>
+        <option value="3">★★★☆☆ (3 - Average)</option>
+        <option value="2">★★☆☆☆ (2 - Poor)</option>
+        <option value="1">★☆☆☆☆ (1 - Very Bad)</option>
+      </select>
+
+      <label for="review">Write Your Review:</label>
+      <textarea id="review" placeholder="Share your experience..." required></textarea>
+
+      <button type="submit" class="btn">Submit Review</button>
+      <p id="successMsg" class="success">✅ Review added successfully!</p>
+    </form>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "user-dashboard.html";
+    }
+
+    function toggleAddReview() {
+      const form = document.getElementById("addReviewForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    function addNewReview(event) {
+      event.preventDefault();
+
+      const hall = document.getElementById("hall").value;
+      const ratingValue = document.getElementById("rating").value;
+      const reviewText = document.getElementById("review").value;
+
+      if (!hall || !ratingValue || !reviewText) return;
+
+      const ratingStars = "★".repeat(ratingValue) + "☆".repeat(5 - ratingValue);
+      const today = new Date().toISOString().split("T")[0];
+
+      const table = document.getElementById("reviewTable").getElementsByTagName("tbody")[0];
+      const newRow = table.insertRow();
+
+      newRow.innerHTML = `
+        <td>${hall}</td>
+        <td class="rating">${ratingStars}</td>
+        <td class="review">${reviewText}</td>
+        <td>${today}</td>
+      `;
+
+      document.getElementById("addReviewForm").reset();
+      document.getElementById("successMsg").style.display = "block";
+
+      setTimeout(() => {
+        document.getElementById("successMsg").style.display = "none";
+        document.getElementById("addReviewForm").style.display = "none";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Hall Details</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  :root {
+    --bg1:#090d1a;
+    --bg2:#180a2c;
+    --pink:#ff7ce9;
+    --aqua:#26ffd9;
+    --text:#e8f0ff;
+    --muted:#9faac7;
+    --radius:14px;
+  }
+
+  body {
+    margin:0;
+    padding:20px;
+    font-family:"Inter",sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    color:var(--text);
+  }
+
+  .container {
+    max-width:900px;
+    margin:0 auto;
+    background:rgba(255,255,255,0.06);
+    padding:25px;
+    border-radius:var(--radius);
+    box-shadow:0 0 10px rgba(255,255,255,0.1);
+  }
+
+  h1 {
+    text-align:center;
+    background:linear-gradient(90deg,var(--pink),var(--aqua));
+    -webkit-background-clip:text;
+    color:transparent;
+  }
+
+  .hall-img {
+    width:100%;
+    height:350px;
+    object-fit:cover;
+    border-radius:var(--radius);
+  }
+
+  .info-box {
+    margin-top:20px;
+    background:rgba(255,255,255,0.08);
+    padding:15px;
+    border-radius:var(--radius);
+  }
+
+  p {
+    color:var(--muted);
+  }
+
+  .btn {
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:var(--radius);
+    background:linear-gradient(90deg,var(--pink),var(--aqua));
+    color:#111;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .back-btn {
+    background:rgba(255,255,255,0.08);
+    margin-top:10px;
+    color:var(--text);
+  }
+
+  /* Reviews Section */
+  .reviews-box {
+    margin-top:30px;
+    background:rgba(255,255,255,0.08);
+    padding:20px;
+    border-radius:var(--radius);
+  }
+
+  .review-item {
+    background:rgba(255,255,255,0.06);
+    padding:12px;
+    border-radius:var(--radius);
+    border:1px solid rgba(255,255,255,0.1);
+    margin-bottom:12px;
+  }
+
+  .review-user {
+    font-weight:bold;
+    color:var(--aqua);
+  }
+
+  .review-rating {
+    color:#ffd76e;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="hallName">Hall Name</h1>
+
+  <img id="hallImage" class="hall-img" src="" alt="Hall">
+
+  <div class="info-box">
+    <p><strong>📍 City:</strong> <span id="hallCity"></span></p>
+    <p><strong>⭐ Rating:</strong> <span id="hallRating"></span></p>
+    <p><strong>👥 Capacity:</strong> <span id="hallGuests"></span></p>
+    <p><strong>💰 Price:</strong> ₹<span id="hallPrice"></span></p>
+    <p><strong>🏷️ Amenities:</strong> <span id="hallAmenities"></span></p>
+  </div>
+
+  <button class="btn" onclick="goToBooking()">Proceed to Booking</button>
+  <button class="btn back-btn" onclick="goBack()">⬅ Back to Search</button>
+
+  <!-- ⭐ REVIEWS SECTION ⭐ -->
+  <div class="reviews-box">
+    <h2 style="
+      text-align:center;
+      background:linear-gradient(90deg,var(--pink),var(--aqua));
+      -webkit-background-clip:text;
+      color:transparent;
+    ">
+      Reviews
+    </h2>
+
+    <div id="reviewSection"></div>
+  </div>
+</div>
+
+<script>
+// Get hall ID
+const urlParams = new URLSearchParams(window.location.search);
+const hallID = parseInt(urlParams.get("id"));
+
+// Load hall data
+const halls = JSON.parse(localStorage.getItem("allHalls") || "[]");
+const hall = halls.find(h => h.id === hallID);
+
+// Display hall details
+if(hall){
+  document.getElementById("hallName").innerText = hall.name;
+  document.getElementById("hallImage").src = hall.image;
+  document.getElementById("hallCity").innerText = hall.city;
+  document.getElementById("hallRating").innerText = hall.rating;
+  document.getElementById("hallGuests").innerText = hall.guests;
+  document.getElementById("hallPrice").innerText = hall.price.toLocaleString();
+  document.getElementById("hallAmenities").innerText = hall.amenities.join(", ");
+}
+
+// Dummy reviews for each hall
+const dummyReviews = {
+  0: [
+    { user:"Aditi", rating:5, comment:"Amazing decoration and the staff was very professional!" },
+    { user:"Rohan", rating:4, comment:"Spacious and perfect for grand weddings." }
+  ],
+  1: [
+    { user:"Priya", rating:5, comment:"Loved the ambiance and music arrangement!" },
+    { user:"Arjun", rating:4, comment:"Good pricing and clean interiors." }
+  ],
+  2: [
+    { user:"Simran", rating:5, comment:"Beautiful hall and very well maintained." },
+    { user:"Manish", rating:4, comment:"Value for money! Parking was excellent." }
+  ],
+  3: [
+    { user:"Megha", rating:5, comment:"Sunshine Palace truly shines! Gorgeous lighting." },
+    { user:"Rahul", rating:4, comment:"Big hall and great service." }
+  ],
+  4: [
+    { user:"Varun", rating:4, comment:"Great outdoor lawn with greenery." },
+    { user:"Neha", rating:4, comment:"Perfect for small functions." }
+  ],
+  5: [
+    { user:"Sneha", rating:5, comment:"Dreamy indeed! Catering was superb." },
+    { user:"Aditya", rating:4, comment:"Nice ambiance and setup." }
+  ],
+  6: [
+    { user:"Ananya", rating:5, comment:"Elegant hall with premium setup." },
+    { user:"Jatin", rating:4, comment:"Decoration was beautiful!" }
+  ],
+  7: [
+    { user:"Harsh", rating:5, comment:"Grand Vivah is absolutely grand!" },
+    { user:"Shreya", rating:5, comment:"Loved every detail of the hall." }
+  ]
+};
+
+// Load reviews
+const reviewBox = document.getElementById("reviewSection");
+dummyReviews[hallID].forEach(r => {
+  reviewBox.innerHTML += `
+    <div class="review-item">
+      <div class="review-user">${r.user}</div>
+      <div class="review-rating">⭐ ${r.rating}/5</div>
+      <p>${r.comment}</p>
+    </div>
+  `;
+});
+
+function goToBooking(){
+  location.href = "booking.html?id=" + hallID;
+}
+
+function goBack(){
+  location.href = "search.html";
+}
+</script>
+
+</body>
+</html>

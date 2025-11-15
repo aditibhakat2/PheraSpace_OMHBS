@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — User Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg1: #070b18;
+      --bg2: #120b24;
+      --pink: #ff7ce9;
+      --aqua: #26ffd9;
+      --blue: #68a5ff;
+      --text: #e8f0ff;
+      --muted: #9faac7;
+      --radius: 14px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar h2 {
+      font-size: 26px;
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .nav-item {
+      padding: 14px;
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 16px;
+    }
+
+    .nav-item:hover {
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      color: #111;
+    }
+
+    .main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 25px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+
+    .section h3 {
+      color: var(--aqua);
+      font-size: 22px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 15px;
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .card p {
+      margin: 6px 0;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      margin-right: 8px;
+      font-size: 12px;
+    }
+
+    .btn {
+      padding: 10px 12px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      font-weight: 700;
+      cursor: pointer;
+      color: #111;
+      margin: 8px 8px 0 0;
+    }
+
+    .btn-alt {
+      background: linear-gradient(90deg, var(--blue), var(--aqua));
+    }
+
+    .btn-danger {
+      background: linear-gradient(90deg, #ff3b3b, #ff7c7c);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .top-card {
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 12px;
+    }
+
+    .top-card img {
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .top-card h4 {
+      margin: 0;
+      font-size: 18px;
+      color: white;
+    }
+
+    .top-card .rating {
+      color: #ffd76e;
+      font-size: 15px;
+      margin: 4px 0;
+    }
+
+    .top-card .amenity {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btn-small {
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--blue), var(--aqua));
+      font-weight: 700;
+      cursor: pointer;
+      color: #111;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>PheraSpace</h2>
+    <div class="nav-item" onclick="openSection('home')">🏠 Dashboard</div>
+    <div class="nav-item" onclick="location.href='wishlist.html'">❤️ Wishlist</div>
+    <div class="nav-item" onclick="openSection('bookings')">📘 My Bookings</div>
+    <div class="nav-item" onclick="openSection('invoices')">🧾 My Invoices</div>
+    <!-- ✅ Changed to review.html -->
+    <div class="nav-item" onclick="location.href='review.html'">⭐ My Reviews</div>
+    <div class="nav-item" onclick="openSection('profile')">👤 Profile</div>
+    <div class="nav-item" onclick="logout()">🚪 Logout</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Dashboard -->
+    <div class="section" id="home">
+      <h3>Welcome to User Dashboard</h3>
+      <p>Explore your bookings, wishlist, invoices, and more.</p>
+      <button class="btn" onclick="location.href='search.html'">Search Marriage Halls</button>
+    </div>
+
+    <!-- Top Rated -->
+    <div class="section" id="topRated">
+      <h3>Top Rated Halls</h3>
+      <div id="topRatedList"></div>
+    </div>
+
+    <!-- My Bookings -->
+    <div class="section" id="bookings" style="display:none;">
+      <h3>My Bookings</h3>
+      <div id="bookingList"></div>
+    </div>
+
+    <!-- Invoices -->
+    <div class="section" id="invoices" style="display:none;">
+      <h3>My Invoices</h3>
+      <div id="invoiceList"></div>
+    </div>
+
+    <!-- My Reviews -->
+    <div class="section" id="reviews" style="display:none;">
+      <h3>My Reviews</h3>
+      <div id="reviewList"></div>
+    </div>
+
+    <!-- Profile -->
+    <div class="section" id="profile" style="display:none;">
+      <h3>My Profile</h3>
+      <p><strong>Name:</strong> <span id="pname">User</span></p>
+      <p><strong>Email:</strong> <span id="pemail">user@example.com</span></p>
+      <p><strong>Phone:</strong> <span id="pphone">+91 XXXXX XXXXX</span></p>
+      <button class="btn btn-alt" onclick="location.href='profile-edit.html'">Edit Profile</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* === Helper Functions === */
+    function toDate(d) { return new Date(d + 'T00:00:00'); }
+    function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+    function today() { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
+    function parseAmount(v) { return Number(String(v || '0').replace(/[₹,\s]/g, '')) || 0; }
+    function fmt(n) { return Number(n || 0).toLocaleString('en-IN'); }
+    function refund80(total) { return Math.round(parseAmount(total) * 0.8); }
+    function getCutoffDate(eventDate) { return addDays(toDate(eventDate), -2); }
+    function isCancelable(eventDate) { return today().getTime() <= getCutoffDate(eventDate).getTime(); }
+
+    /* === Navigation === */
+    function openSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      if (id === 'home') {
+        document.getElementById('home').style.display = 'block';
+        document.getElementById('topRated').style.display = 'block';
+      } else document.getElementById(id).style.display = 'block';
+      if (id === 'bookings') loadBookings();
+      if (id === 'invoices') loadInvoices();
+      if (id === 'profile') loadProfile();
+      if (id === 'reviews') loadReviews();
+    }
+
+    /* === Load Top Rated Halls === */
+    function loadTopRated() {
+      const halls = JSON.parse(localStorage.getItem("allHalls") || "[]");
+      halls.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      const top3 = halls.slice(0, 3);
+      const box = document.getElementById("topRatedList");
+      box.innerHTML = "";
+      top3.forEach((h, i) => {
+        box.innerHTML += `
+          <div class="top-card">
+            <img src="image/custom${i+1}.jpg" alt="${h.name}">
+            <div>
+              <h4>${h.name}</h4>
+              <div class="rating">⭐ ${h.rating || "-"}</div>
+              <div class="amenity"><strong>Amenities:</strong> ${h.amenities?.join(", ") || "-"}</div>
+              <button class="btn-small" onclick="location.href='hall-details.html?id=${i}'">View Details</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    /* === Profile === */
+    function loadProfile() {
+      const p = JSON.parse(localStorage.getItem('profile') || '{}');
+      if (p.name) document.getElementById('pname').innerText = p.name;
+      if (p.email) document.getElementById('pemail').innerText = p.email;
+      if (p.phone) document.getElementById('pphone').innerText = p.phone;
+    }
+
+    /* === My Bookings === */
+    function loadBookings() {
+      const all = JSON.parse(localStorage.getItem('allBookings') || '[]');
+      const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+      const box = document.getElementById('bookingList');
+      box.innerHTML = all.length ? "" : "<p>No bookings yet.</p>";
+
+      all.forEach(b => {
+        const cutoff = getCutoffDate(b.eventDate);
+        const canCancel = b.status === 'Confirmed' && isCancelable(b.eventDate);
+        const previewRefund = refund80(b.totalPrice);
+        const eventDone = toDate(b.eventDate) < today();
+        const review = reviews.find(r => r.bookingID === b.bookingID);
+
+        box.innerHTML += `
+          <div class="card">
+            <p><span class="badge">ID: ${b.bookingID}</span><span class="badge">Status: ${b.status}</span></p>
+            <p><strong>Hall:</strong> ${b.hallName}</p>
+            <p><strong>Date:</strong> ${b.eventDate} • <strong>Time:</strong> ${b.timeSlot}</p>
+            <p><strong>Total Paid:</strong> ₹${fmt(b.totalPrice)}</p>
+
+            ${b.status === 'Confirmed' ? `
+              <p><strong>Free cancellation until:</strong> ${cutoff.toLocaleDateString()}</p>
+              <p><strong>Eligible to cancel:</strong> ${canCancel ? 'Yes' : 'No (deadline passed)'}</p>
+              <p><strong>Refund on cancellation:</strong> ₹${fmt(previewRefund)} (80%)</p>
+              <div class="actions">
+                <button class="btn" onclick="openInvoice('${b.bookingID}')">Invoice</button>
+                <button class="btn btn-danger" ${canCancel ? '' : 'disabled'} onclick="cancelBooking('${b.bookingID}')">Cancel</button>
+                <button class="btn btn-alt" onclick="rescheduleBooking('${b.bookingID}')">Reschedule</button>
+                ${eventDone && !review ? `<button class="btn" onclick="reviewBooking('${b.bookingID}')">Review</button>` : ''}
+              </div>
+            ` : `
+              <p><strong>Cancelled:</strong> ${b.cancellationDate || '-'}</p>
+              <p><strong>Refund:</strong> ₹${fmt(b.refundAmount || 0)} — ${b.refundStatus || 'Initiated'}</p>
+              <div class="actions">
+                <button class="btn" onclick="openInvoice('${b.bookingID}')">Invoice</button>
+                <button class="btn btn-alt" onclick="viewRefund('${b.bookingID}')">Refund Status</button>
+              </div>
+            `}
+
+            ${review ? `
+              <hr><p><strong>Your Review:</strong> ⭐${review.rating}/5</p>
+              <p>"${review.comment}"</p>
+            ` : ''}
+          </div>`;
+      });
+    }
+
+    /* === My Reviews === */
+    function loadReviews() {
+      const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+      const box = document.getElementById('reviewList');
+      if (!reviews.length) { box.innerHTML = "<p>No reviews yet.</p>"; return; }
+      box.innerHTML = "";
+      reviews.forEach(r => {
+        box.innerHTML += `
+          <div class="card">
+            <p><strong>Hall:</strong> ${r.hallName}</p>
+            <p><strong>Booking ID:</strong> ${r.bookingID}</p>
+            <p><strong>Rating:</strong> ⭐ ${r.rating}/5</p>
+            <p><strong>Comment:</strong> "${r.comment}"</p>
+            <p style="font-size:12px;color:#999;">Reviewed on ${r.date}</p>
+          </div>`;
+      });
+    }
+
+    /* === My Invoices === */
+    function loadInvoices() {
+      const all = JSON.parse(localStorage.getItem('allBookings') || '[]');
+      const box = document.getElementById('invoiceList');
+      if (!all.length) { box.innerHTML = "<p>No invoices yet.</p>"; return; }
+      const last = all.slice(0, 3);
+      box.innerHTML = "";
+      last.forEach(b => {
+        box.innerHTML += `
+          <div class="card">
+            <p><strong>Booking:</strong> ${b.bookingID} — ${b.hallName}</p>
+            <p><strong>Date:</strong> ${b.eventDate}</p>
+            <p><strong>Amount:</strong> ₹${fmt(b.totalPrice)}</p>
+            <button class="btn" onclick="openInvoice('${b.bookingID}')">Open Invoice</button>
+          </div>`;
+      });
+    }
+
+    /* === Action Handlers === */
+    function openInvoice(id) {
+      const all = JSON.parse(localStorage.getItem('allBookings') || '[]');
+      const b = all.find(x => x.bookingID === id);
+      localStorage.setItem('invoiceData', JSON.stringify(b));
+      location.href = 'invoice.html';
+    }
+
+    function cancelBooking(id) { location.href = 'cancel-booking.html?id=' + id; }
+    function viewRefund(id) { location.href = 'refund-status.html?id=' + id; }
+    function rescheduleBooking(id) { location.href = 'reschedule-booking.html?id=' + id; }
+    function reviewBooking(id) { location.href = 'review.html?id=' + id; }
+    function logout() { alert('Logged out!'); location.href = 'login.html'; }
+
+    /* === Initialize === */
+    loadTopRated();
+    openSection('home');
+  </script>
+</body>
+</html>

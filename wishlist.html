@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Wishlist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#090d1a; --bg2:#180a2c;
+  --pink:#ff7ce9; --aqua:#26ffd9; --blue:#68a5ff;
+  --text:#e8f0ff; --muted:#9faac7;
+  --radius:14px;
+}
+
+body{
+  margin:0;
+  padding:20px;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  font-family:"Inter",sans-serif;
+  color:var(--text);
+}
+
+.back{
+  color:var(--muted);
+  cursor:pointer;
+  margin-bottom:20px;
+  display:inline-block;
+}
+
+h1{
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.card{
+  background:rgba(255,255,255,0.08);
+  padding:15px;
+  border-radius:var(--radius);
+  display:flex;
+  gap:15px;
+  margin-bottom:15px;
+  border:1px solid rgba(255,255,255,0.12);
+}
+
+.card img{
+  width:150px;
+  height:110px;
+  border-radius:var(--radius);
+  object-fit:cover;
+}
+
+.btn{
+  padding:10px 14px;
+  margin-top:10px;
+  border:none;
+  cursor:pointer;
+  border-radius:var(--radius);
+  font-weight:700;
+}
+
+.view-btn{
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+}
+
+.delete-btn{
+  background:linear-gradient(90deg,#ff4b4b,#ff7c7c);
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="back" onclick="window.location.href='user-dashboard.html'">⬅ Back to Dashboard</div>
+
+<h1>Your Wishlist</h1>
+
+<div id="wishlistContainer"></div>
+
+<script>
+function loadWishlist(){
+  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  let box = document.getElementById("wishlistContainer");
+  box.innerHTML = "";
+
+  if(wishlist.length === 0){
+    box.innerHTML = "<p>No items in wishlist.</p>";
+    return;
+  }
+
+  wishlist.forEach((h, i) => {
+    box.innerHTML += `
+      <div class="card">
+        <img src="${h.image}">
+        <div>
+          <h2>${h.name}</h2>
+          <p><strong>Location:</strong> ${h.location}</p>
+          <p><strong>Price:</strong> ₹${h.price.toLocaleString()}</p>
+          <button class="btn view-btn" onclick="viewHall(${i})">View Hall</button>
+          <button class="btn delete-btn" onclick="deleteItem(${i})">Remove</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function viewHall(i){
+  let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+  let hall = wishlist[i];
+  let all = JSON.parse(localStorage.getItem("allHalls"));
+  let index = all.findIndex(h => h.name === hall.name);
+  window.location.href = "hall-details.html?id=" + index;
+}
+
+function deleteItem(i){
+  let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+  wishlist.splice(i, 1);
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  loadWishlist();
+}
+
+loadWishlist();
+</script>
+
+</body>
+</html>

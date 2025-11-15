@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg1:#0a0c1f;
+  --bg2:#160b30;
+  --pink:#ff7ce9;
+  --aqua:#26ffd9;
+  --text:#e8f0ff;
+  --muted:#a2adc7;
+  --radius:12px;
+}
+
+body {
+  margin:0;
+  font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.register-box {
+  background:rgba(255,255,255,0.07);
+  border-radius:var(--radius);
+  padding:35px;
+  width:360px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+h2 {
+  text-align:center;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:25px;
+}
+
+label {
+  display:block;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+input {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-bottom:15px;
+  background-color:rgba(255,255,255,0.1);
+  color:var(--text);
+  font-size:15px;
+  outline:none;
+}
+
+.role-buttons {
+  display:flex;
+  justify-content:space-between;
+  margin:15px 0 25px;
+}
+
+.role-buttons button {
+  flex:1;
+  margin:0 5px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:rgba(255,255,255,0.1);
+  color:var(--text);
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.2s, transform 0.2s;
+}
+
+.role-buttons button.active {
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+  transform:scale(1.05);
+}
+
+button.submit {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+  transition:transform 0.2s;
+}
+button.submit:hover {
+  transform:scale(1.05);
+}
+
+.note {
+  text-align:center;
+  margin-top:12px;
+  font-size:14px;
+  color:var(--muted);
+}
+.note a {
+  color:var(--aqua);
+  text-decoration:none;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+<div class="register-box">
+  <h2>Create Account</h2>
+
+  <form id="registerForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Create a password" required>
+
+    <label>Select Role</label>
+    <div class="role-buttons">
+      <button type="button" id="userBtn">User</button>
+      <button type="button" id="ownerBtn">Venue Owner</button>
+      <button type="button" id="adminBtn">Admin</button>
+    </div>
+
+    <input type="hidden" id="role" value="">
+
+    <button type="submit" class="submit">Register</button>
+  </form>
+
+  <div class="note">
+    Already registered? <a href="login.html">Login here</a>
+  </div>
+</div>
+
+<script>
+// Role selection logic
+const userBtn = document.getElementById("userBtn");
+const ownerBtn = document.getElementById("ownerBtn");
+const adminBtn = document.getElementById("adminBtn");
+const roleInput = document.getElementById("role");
+
+[userBtn, ownerBtn, adminBtn].forEach(btn => {
+  btn.addEventListener("click", () => {
+    [userBtn, ownerBtn, adminBtn].forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    roleInput.value = btn.innerText.toLowerCase();
+  });
+});
+
+const form = document.getElementById("registerForm");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const role = document.getElementById("role").value;
+
+  if (!name || !email || !password || !role) {
+    alert("⚠ Please fill all fields and select a role.");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+  if (users.find(u => u.email === email)) {
+    alert("⚠ Email already registered!");
+    return;
+  }
+
+  users.push({ name, email, password, role });
+  localStorage.setItem("registeredUsers", JSON.stringify(users));
+
+  alert("✅ Registration successful! Redirecting to login page...");
+  window.location.href = "login.html";
+});
+</script>
+</body>
+</html>

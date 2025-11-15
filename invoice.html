@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Invoice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+:root{
+  --bg1:#090d1a; --bg2:#180a2c; --text:#e8f0ff; --muted:#b7c0d8;
+  --pink:#ff7ce9; --aqua:#26ffd9; --radius:14px;
+}
+*{box-sizing:border-box;font-family:"Inter",system-ui,Arial;}
+body{margin:0;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);padding:20px;}
+.container{max-width:800px;margin:auto;background:#0f1730; /* deep panel */ padding:24px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);box-shadow:0 0 24px rgba(0,0,0,0.45);}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--aqua));display:grid;place-items:center;color:#111;font-weight:900;font-size:20px;box-shadow:0 0 16px rgba(255,255,255,0.15);}
+.title{font-size:26px;margin:0;background:linear-gradient(90deg,var(--pink),var(--aqua));-webkit-background-clip:text;color:transparent;}
+.meta{color:var(--muted);font-size:14px;}
+hr{border:0;border-top:1px solid rgba(255,255,255,0.15);margin:16px 0;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.box{background:rgba(255,255,255,0.06);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);}
+.box h4{margin:0 0 8px 0;color:var(--aqua);font-size:16px;}
+.line{display:flex;justify-content:space-between;margin:6px 0;color:var(--muted);font-size:14px}
+.total{font-size:18px;color:#fff;font-weight:700;}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+.btn{padding:12px 14px;border:none;border-radius:12px;font-weight:700;cursor:pointer}
+.primary{background:linear-gradient(90deg,var(--pink),var(--aqua));color:#111;}
+.ghost{background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--text);}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+@media print{
+  body{background:#fff;color:#000;}
+  .container{box-shadow:none;border:0;background:#fff;color:#000}
+  .logo{color:#000}
+  .actions{display:none}
+  .title{color:#000;background:none;-webkit-text-fill-color:#000}
+  .box,.grid,.line,hr{border-color:#ddd}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <div class="logo">PS</div>
+      <div>
+        <h1 class="title">PheraSpace Invoice</h1>
+        <div class="meta">Trusted marriage hall bookings</div>
+      </div>
+    </div>
+    <div class="meta" id="invMetaRight">
+      <!-- Booking ID & Date injected -->
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="grid">
+    <div class="box">
+      <h4>Booking Details</h4>
+      <div class="line"><span>Booking ID</span><span id="bookingID">-</span></div>
+      <div class="line"><span>Hall</span><span id="hallName">-</span></div>
+      <div class="line"><span>Date</span><span id="eventDate">-</span></div>
+      <div class="line"><span>Time Slot</span><span id="timeSlot">-</span></div>
+      <div class="line"><span>Guests</span><span id="guestCount">-</span></div>
+    </div>
+
+    <div class="box">
+      <h4>Billing To</h4>
+      <div class="line"><span>Name</span><span id="billToName">Customer</span></div>
+      <div class="line"><span>Email</span><span id="billToEmail">customer@example.com</span></div>
+      <div class="line"><span>Contact</span><span id="billToPhone">+91 XXXXX XXXXX</span></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="box">
+    <h4>Charges</h4>
+    <div class="line"><span>Base Hall Price</span><span>₹ <span id="basePrice">0</span></span></div>
+    <div class="line"><span>Food Package (Veg) — est.</span><span>₹ <span id="foodCost">0</span></span></div>
+    <div class="line"><span>Taxes (included)</span><span>₹ 0</span></div>
+    <hr>
+    <div class="line total"><span>Total Paid</span><span>₹ <span id="totalPrice">0</span></span></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn ghost" onclick="window.location.href='booking-confirmation.html'">Back</button>
+    <button class="btn primary" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="note">This is a computer-generated invoice. For support, contact support@pheraspace.com</div>
+</div>
+
+<script>
+/* Load invoice data */
+let inv = null;
+try { inv = JSON.parse(localStorage.getItem("invoiceData")); } catch(e){}
+
+if(!inv){
+  alert("Invoice data not found. Redirecting to dashboard.");
+  window.location.href = "user-dashboard.html";
+}
+
+/* Fill fields */
+const now = new Date();
+document.getElementById("invMetaRight").innerText = `Issued on: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+
+document.getElementById("bookingID").innerText = inv.bookingID || "-";
+document.getElementById("hallName").innerText = inv.hallName || "-";
+document.getElementById("eventDate").innerText = inv.eventDate || "-";
+document.getElementById("timeSlot").innerText = inv.timeSlot || "-";
+document.getElementById("guestCount").innerText = inv.guests || "-";
+
+/* Basic amounts */
+const total = parseAmount(inv.totalPrice);
+const base = inv.hallPrice || 0;
+const food = Math.max(total - base, 0);
+
+document.getElementById("basePrice").innerText = formatAmount(base);
+document.getElementById("foodCost").innerText = formatAmount(food);
+document.getElementById("totalPrice").innerText = formatAmount(total);
+
+/* Optional: If you captured user contact during booking, set here */
+const user = JSON.parse(localStorage.getItem("bookingContact") || "{}");
+document.getElementById("billToName").innerText = user.name || "Customer";
+document.getElementById("billToEmail").innerText = user.email || "customer@example.com";
+document.getElementById("billToPhone").innerText = user.phone || "+91 XXXXX XXXXX";
+
+/* Helpers */
+function parseAmount(v){
+  if(typeof v === "number") return v;
+  if(!v) return 0;
+  return Number(String(v).replace(/[₹,\s]/g,"")) || 0;
+}
+function formatAmount(n){
+  return Number(n).toLocaleString("en-IN");
+}
+</script>
+
+</body>
+</html>

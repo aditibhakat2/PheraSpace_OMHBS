@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PheraSpace — Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg1:#0a0c1f; --bg2:#160b30;
+  --pink:#ff7ce9; --aqua:#26ffd9; --text:#e8f0ff;
+  --radius:14px;
+}
+body{
+  margin:0; font-family:"Inter",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text); display:flex; min-height:100vh;
+}
+.sidebar{
+  width:260px; background:rgba(255,255,255,0.05);
+  padding:25px; border-right:1px solid rgba(255,255,255,0.1);
+}
+.sidebar h2{
+  font-size:24px; margin-bottom:25px;
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  -webkit-background-clip:text; color:transparent;
+}
+.nav-item{
+  padding:14px; border-radius:var(--radius);
+  background:rgba(255,255,255,0.08);
+  margin-bottom:12px; cursor:pointer;
+}
+.nav-item:hover{
+  background:linear-gradient(90deg,var(--pink),var(--aqua)); color:#111;
+}
+.main{ flex:1; padding:30px; }
+.section{
+  background:rgba(255,255,255,0.08);
+  padding:25px; border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.card{
+  background:rgba(255,255,255,0.07);
+  padding:15px; border-radius:var(--radius);
+  margin-bottom:12px;
+}
+button{
+  padding:10px 14px; border:none; border-radius:var(--radius);
+  background:linear-gradient(90deg,var(--pink),var(--aqua));
+  color:#111; font-weight:700; cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>PheraSpace Admin</h2>
+  <div class="nav-item" onclick="openPage('admin-hall-verification.html')">🏛 Verify Halls</div>
+  <div class="nav-item" onclick="openPage('admin-reports.html')">📊 Reports & Analytics</div>
+  <div class="nav-item" onclick="logout()">🚪 Logout</div>
+</div>
+
+<div class="main">
+  <div class="section">
+    <h3>Welcome, Admin!</h3>
+    <p>Manage hall approvals, view system analytics, and monitor PheraSpace activity.</p>
+  </div>
+
+  <div class="section">
+    <h3>📅 Recent Activities</h3>
+    <div class="card"><strong>12 Nov 2025:</strong> Royal Palace Hall approved by Admin.</div>
+    <div class="card"><strong>11 Nov 2025:</strong> New Hall “Golden Venue” submitted by owner.</div>
+    <div class="card"><strong>10 Nov 2025:</strong> User Aditi booked “Royal Palace” for 25 Nov 2025.</div>
+    <div class="card"><strong>09 Nov 2025:</strong> Admin generated monthly revenue report.</div>
+  </div>
+
+  <div class="section">
+    <h3>Quick Actions</h3>
+    <button onclick="openPage('admin-hall-verification.html')">Go to Hall Verification</button>
+    <button onclick="openPage('admin-reports.html')">View Reports</button>
+  </div>
+</div>
+
+<script>
+function openPage(p){ window.location.href=p; }
+function logout(){
+  localStorage.removeItem("loggedUser");
+  alert("Logged out successfully!");
+  window.location.href="login.html";
+}
+</script>
+</body>
+</html>

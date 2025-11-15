@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PheraSpace — Your Dream Wedding Hall Awaits</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg1: #090d1a;
+      --bg2: #180a2c;
+      --pink: #ff7ce9;
+      --light-pink: #ffb3e6;
+      --aqua: #26ffd9;
+      --gold: #ffd86b;
+      --text: #e8f0ff;
+      --muted: #b0b8d5;
+      --radius: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-family: "Great Vibes", cursive;
+      font-size: 38px;
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin: 0;
+    }
+
+    nav button {
+      margin-left: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn {
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      color: #111;
+    }
+
+    .register-btn {
+      background: transparent;
+      border: 2px solid var(--aqua);
+      color: var(--aqua);
+    }
+
+    .register-btn:hover {
+      background: var(--aqua);
+      color: #111;
+    }
+
+    .login-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('image/wedding-night-bg.jpg') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-size: 52px;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--light-pink), var(--gold));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-family: "Great Vibes", cursive;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .hero button {
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      border: none;
+      color: #111;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 25px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .hero button:hover {
+      transform: scale(1.05);
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 80px 50px;
+      background: rgba(255,255,255,0.05);
+      text-align: center;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.08);
+      padding: 25px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 2px solid var(--aqua);
+      object-fit: cover;
+    }
+
+    .feature-card h3 {
+      color: var(--aqua);
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* GALLERY */
+    .gallery {
+      padding: 80px 30px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.05));
+    }
+
+    .gallery h2 {
+      font-size: 32px;
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 40px;
+      font-family: "Great Vibes", cursive;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    /* REVIEWS */
+    .reviews {
+      text-align: center;
+      padding: 80px 20px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .reviews h2 {
+      font-size: 32px;
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 40px;
+      font-family: "Great Vibes", cursive;
+    }
+
+    .review-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .review-card {
+      background: rgba(255,255,255,0.08);
+      padding: 25px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+
+    .review-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      float: left;
+      margin-right: 15px;
+      border: 2px solid var(--aqua);
+      object-fit: cover;
+    }
+
+    .review-card strong {
+      color: var(--aqua);
+    }
+
+    /* CTA */
+    .cta {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px;
+      color: #fff;
+      background: url('image/cta-bg.jpg') center/cover no-repeat;
+    }
+
+    .cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta h2 {
+      font-size: 36px;
+      margin-bottom: 15px;
+      font-family: "Great Vibes", cursive;
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .cta button {
+      background: linear-gradient(90deg, var(--pink), var(--aqua));
+      color: #111;
+      border: none;
+      border-radius: var(--radius);
+      padding: 12px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.3s ease;
+    }
+
+    .cta button:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>PheraSpace</h1>
+    <nav>
+      <button class="login-btn" onclick="goToLogin()">Login</button>
+      <button class="register-btn" onclick="goToRegister()">Register</button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Your Perfect Dreamy Wedding Begins Here!</h2>
+      <p>Events found their Home.....Discover, compare, and book luxurious marriage halls effortlessly — because your love deserves the best.</p>
+      <button onclick="goToLogin()">Explore Halls</button>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature-card">
+      <img src="image/hall.jpg" alt="Wedding Hall">
+      <h3>Book Beautiful Halls</h3>
+      <p>Find stunning venues designed for magical moments that last a lifetime.</p>
+    </div>
+    <div class="feature-card">
+      <img src="image/decoration.jpg" alt="Decoration">
+      <h3>Elegant Decorations</h3>
+      <p>Make your wedding shine with customized floral and lighting arrangements.</p>
+    </div>
+    <div class="feature-card">
+      <img src="image/photography.webp" alt="Photography">
+      <h3>Capture the Magic</h3>
+      <p>Hire professional photographers to preserve every emotion perfectly.</p>
+    </div>
+    <div class="feature-card">
+      <img src="image/dining.jpg" alt="Catering">
+      <h3>Delicious Dining</h3>
+      <p>Delight your guests with world-class wedding catering services.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <h2>Magical Wedding Moments</h2>
+    <div class="gallery-grid">
+      <img src="image/gallery1.jpg" alt="Wedding Decor">
+      <img src="image/gallery2.webp" alt="Stage Setup">
+      <img src="image/gallery3.jpg" alt="Luxury Hall">
+      <img src="image/gallery4.jpg" alt="Couple Moment">
+      <img src="image/gallery5.jpg" alt="Outdoor Wedding">
+      <img src="image/gallery6.jpg" alt="Candlelight Decor">
+      <img src="image/gallery7.jpg" alt="Food Catering">
+      <img src="image/gallery8.png" alt="Reception Stage">
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <h2> Lets See What Our Happy Couples Say </h2>
+    <div class="review-cards">
+      <div class="review-card">
+        <img src="image/user1.jpg" alt="User">
+        <strong>Priya & Arjun</strong><br>
+        ⭐⭐⭐⭐⭐<br>
+        “PheraSpace made our wedding planning so effortless! The hall was stunning, and everything went flawlessly.”
+      </div>
+      <div class="review-card">
+        <img src="image/user2.jpeg" alt="User">
+        <strong>Ritika & Rohan</strong><br>
+        ⭐⭐⭐⭐☆<br>
+        “We found our dream venue here. Loved the user-friendly interface and the service support.”
+      </div>
+      <div class="review-card">
+        <img src="image/user3.jpg" alt="User">
+        <strong>Ananya & Karan</strong><br>
+        ⭐⭐⭐⭐⭐<br>
+        “The decoration and catering suggestions were top-notch. Highly recommended for stress-free wedding booking!”
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2>Begin Your Fairytale with PheraSpace</h2>
+      <p>Find your dream venue today and let the celebrations begin.</p>
+      <button onclick="goToRegister()">Get Started</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 PheraSpace — Made with 💖 for your special day.
+  </footer>
+
+  <script>
+    function goToLogin() {
+      window.location.href = "login.html";
+    }
+
+    function goToRegister() {
+      window.location.href = "register.html";
+    }
+  </script>
+</body>
+</html>
