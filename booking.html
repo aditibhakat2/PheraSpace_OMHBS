@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>PheraSpace — Booking</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -93,48 +94,88 @@
     }
   </style>
 </head>
+
 <body>
+
   <div class="container">
     <h1>Book Your Hall</h1>
 
     <div class="hall-info">
-      <p><strong>Hall Name:</strong> Royal Banquet Hall</p>
-      <p><strong>Location:</strong> Mumbai</p>
-      <p><strong>Price:</strong> ₹50,000 per day</p>
-      <p><strong>Capacity:</strong> 400 guests</p>
+      <p><strong>Hall Name:</strong> <span id="hallName"></span></p>
+      <p><strong>Location:</strong> <span id="hallCity"></span></p>
+      <p><strong>Price:</strong> ₹<span id="hallPrice"></span> per day</p>
+      <p><strong>Capacity:</strong> <span id="hallGuests"></span> guests</p>
     </div>
 
-    <form action="payment.html" method="get">
-      <label for="date">Select Date:</label>
-      <input type="date" id="date" name="date" required>
+    <form onsubmit="saveBooking(event)">
+      <label>Select Date:</label>
+      <input type="date" id="date" required>
 
-      <label for="timeSlot">Select Time Slot:</label>
-      <select id="timeSlot" name="timeSlot" required>
+      <label>Select Time Slot:</label>
+      <select id="timeSlot" required>
         <option value="">Select a Time Slot</option>
-        <option value="morning">Morning (8 AM – 12 PM)</option>
-        <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
-        <option value="evening">Evening (4 PM – 8 PM)</option>
-        <option value="fullday">Full Day (8 AM – 8 PM)</option>
+        <option value="Morning (8 AM – 12 PM)">Morning</option>
+        <option value="Afternoon (12 PM – 4 PM)">Afternoon</option>
+        <option value="Evening (4 PM – 8 PM)">Evening</option>
+        <option value="Full Day (8 AM – 8 PM)">Full Day</option>
       </select>
 
-      <label for="guests">Number of Guests:</label>
-      <input type="number" id="guests" name="guests" min="1" max="500" required>
+      <label>Number of Guests:</label>
+      <input type="number" id="guests" min="1" required>
 
-      <label for="eventType">Event Type:</label>
-      <select id="eventType" name="eventType" required>
+      <label>Event Type:</label>
+      <select id="eventType" required>
         <option value="">Select</option>
-        <option value="wedding">Wedding</option>
-        <option value="engagement">Engagement</option>
-        <option value="reception">Reception</option>
-        <option value="birthday">Birthday</option>
-        <option value="other">Other</option>
+        <option value="Wedding">Wedding</option>
+        <option value="Engagement">Engagement</option>
+        <option value="Reception">Reception</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Other">Other</option>
       </select>
 
       <div class="btn-container">
-        <a href="hall-details.html" class="btn btn-back">← Back to Hall Details</a>
+        <a href="hall-details.html?id=" class="btn btn-back" id="backBtn">← Back to Hall Details</a>
         <button type="submit" class="btn btn-proceed">Proceed to Payment →</button>
       </div>
     </form>
   </div>
+
+<script>
+// Get hall ID from URL
+const hallID = new URLSearchParams(window.location.search).get("id");
+
+// Load halls
+const halls = JSON.parse(localStorage.getItem("allHalls")) || [];
+const hall = halls.find(h => h.id == hallID);
+
+// Display hall info
+document.getElementById("hallName").innerText = hall.name;
+document.getElementById("hallCity").innerText = hall.city;
+document.getElementById("hallPrice").innerText = hall.price.toLocaleString();
+document.getElementById("hallGuests").innerText = hall.guests;
+
+// Fix back button
+document.getElementById("backBtn").href = "hall-details.html?id=" + hallID;
+
+function saveBooking(event){
+  event.preventDefault();
+
+  const bookingData = {
+    hallName: hall.name,
+    hallCity: hall.city,
+    hallID: hall.id,
+    eventDate: document.getElementById("date").value,
+    timeSlot: document.getElementById("timeSlot").value,
+    guests: document.getElementById("guests").value,
+    eventType: document.getElementById("eventType").value,
+    totalPrice: hall.price
+  };
+
+  localStorage.setItem("bookingData", JSON.stringify(bookingData));
+
+  window.location.href = "payment.html";
+}
+</script>
+
 </body>
 </html>
